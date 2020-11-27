@@ -8,8 +8,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-// NewDataBase ...
-func NewDataBase(conf *config.Config) (*sqlx.DB, error) {
+// NewDatabase ...
+func NewDatabase(conf *config.Config) (*sqlx.DB, error) {
 	switch conf.DB.Type {
 	case "sqlite3":
 		db, err := sqlx.Open(conf.DB.Driver, conf.DB.Conn)
@@ -23,7 +23,6 @@ func NewDataBase(conf *config.Config) (*sqlx.DB, error) {
 		}
 
 		return db, nil
-
 	default:
 		return nil, errors.New("invalid db type")
 	}

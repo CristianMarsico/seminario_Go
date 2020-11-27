@@ -1,3 +1,7 @@
-db: 
+db:
+  type: "sqlite3"
   driver: "sqlite3"
-version: 0.1.0  
+  conn: "./test/data.db"
+tournament:
+  version: /v1
+version: 0.1.0

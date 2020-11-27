@@ -8,28 +8,35 @@ import (
 
 // DbConfig ...
 type DbConfig struct {
-	Driver string `yaml:"driver"`
 	Type   string `yaml:"type"`
+	Driver string `yaml:"driver"`
 	Conn   string `yaml:"conn"`
+}
+
+// ListaConfig ...
+type ListaConfig struct {
+	Version string `yaml:"version"`
 }
 
 // Config ...
 type Config struct {
 	DB      DbConfig `yaml:"db"`
 	Version string   `yaml:"version"`
+	//Tournament TournamentConfig `yaml:"tournament"`
 }
 
 // LoadConfig ...
-func LoadConfig(filename string) (*Config, error) {
+func LoadConfig(filename string) *Config {
 	file, err := ioutil.ReadFile(filename)
-
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
+
 	var c = &Config{}
 	err = yaml.Unmarshal(file, c)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
-	return c, nil
+
+	return c
 }
