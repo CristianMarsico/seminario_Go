@@ -2,7 +2,6 @@ package lista
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/CristianMarsico/seminario_Go/internal/config"
 	"github.com/jmoiron/sqlx"
@@ -14,7 +13,7 @@ type Service interface {
 	GetAll() ([]*Lista, error)
 	GetByID(int64) (*Lista, error)
 	Delete(int64) error
-	Edit(string, string) string
+	Edit(string, int64) error
 }
 
 // Lista ...
@@ -94,14 +93,12 @@ func (s service) Delete(l int64) error {
 }
 
 // Edit ...
-func (s service) Edit(n string, l string) string {
+func (s service) Edit(n string, l int64) error {
 	query := `UPDATE lista SET name = ? WHERE id = ?`
-	res, err := s.db.Exec(query, n, l)
+	_, err := s.db.Exec(query, n, l)
 
 	if err != nil {
-		return fmt.Sprintf("%v", errors.New("DATABASE ERROR - "+err.Error()))
+		return errors.New("DATABASE ERROR - " + err.Error())
 	}
-	RowsAffected, _ := res.RowsAffected()
-
-	return fmt.Sprintf("modificado: %d", RowsAffected)
+	return nil
 }

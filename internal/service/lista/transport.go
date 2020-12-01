@@ -75,7 +75,7 @@ func getAll(s Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		l, err := s.GetAll()
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"no es posible acceder a la lista": err.Error()})
+			c.JSON(http.StatusBadRequest, gin.H{"no es posible acceder a la lista ": err.Error()})
 			return
 		}
 		c.JSON(http.StatusOK, gin.H{
@@ -130,11 +130,19 @@ func add(s Service) gin.HandlerFunc {
 }
 
 func edit(s Service) gin.HandlerFunc {
+
 	return func(c *gin.Context) {
-		i := c.Param("ID")
-		n := c.Query("new")
+		l, _ := strconv.ParseInt(c.Param("ID"), 10, 64)
+		n := c.Query("name")
+
+		err := s.Edit(n, l)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"No se ha podido editar ": err.Error()})
+			return
+		}
+
 		c.JSON(http.StatusOK, gin.H{
-			"lista": s.Edit(n, i),
+			"status": "OK",
 		})
 	}
 }
